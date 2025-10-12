@@ -1,0 +1,13 @@
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="over">
+    <app-menu [sidenav]="sidenav"></app-menu>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar>
+      <button mat-icon-button (click)="onToggleSidenav(sidenav)">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </mat-toolbar>
+    <router-outlet />
+  </mat-sidenav-content>
+</mat-sidenav-container>
