@@ -1,0 +1,21 @@
+<mat-card class="post-form-card" appearance="outlined">
+  <mat-card-content>
+    <div class="post-form-container">
+      <div mat-card-avatar class="poster-profile-picture">
+        <mat-icon>person</mat-icon>
+      </div>
+      <form [formGroup]="postForm" class="post-form">
+        <mat-form-field appearance="outline">
+          <textarea matInput formControlName="text"></textarea>
+        </mat-form-field>
+        <button
+          mat-flat-button
+          (click)="onSubmit()"
+          [disabled]="!postForm.valid"
+        >
+          Post
+        </button>
+      </form>
+    </div>
+  </mat-card-content>
+</mat-card>

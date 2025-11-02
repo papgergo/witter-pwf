@@ -1,1 +1,21 @@
-<p>messages works!</p>
+<div class="main-container">
+  <h2>Messages</h2>
+  @for (post of messageCollection; track $index) {
+  <mat-card class="post" appearance="outlined">
+    <mat-card-header>
+      <div mat-card-avatar poster-profile-picture>
+        <mat-icon>person</mat-icon>
+      </div>
+      <mat-card-title>{{ post.senderUser.displayName }}</mat-card-title>
+      <mat-card-subtitle>{{ post.senderUser.username }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      @if (post.content.text) {
+      <p>{{ post.content.text }}</p>
+      } @else if (post.content.attachmentCollection){
+      <p>Sent an Attachment</p>
+      }
+    </mat-card-content>
+  </mat-card>
+  }
+</div>
