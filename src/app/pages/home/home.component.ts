@@ -1,23 +1,21 @@
 import { Component } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
-import { RouterLink } from '@angular/router';
 import { Post } from '../../shared/models/post';
 import { PostComponent } from './post/post.component';
 import { PostFormComponent } from './post-form/post-form.component';
-import { ManagementService } from '../../shared/services/management.service';
+import { PostService } from '../../shared/services/post.service';
+import { Observable } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
+import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'app-home',
-  imports: [PostComponent, PostFormComponent],
+  imports: [PostComponent, PostFormComponent, AsyncPipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-  public postCollection: Post[];
-
-  constructor(private managementService: ManagementService) {
-    this.postCollection = managementService.posts;
+  public postCollection$: Observable<Post[]>;
+  constructor(private postService: PostService) {
+    this.postCollection$ = this.postService.selectedPosts$;
   }
 }

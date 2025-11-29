@@ -1,7 +1,7 @@
 <div class="main-container">
   <h2>Home</h2>
   <app-post-form></app-post-form>
-  @for (post of postCollection; track $index) {
+  @for (post of postCollection$ | async; track post.id) {
   <app-post [post]="post"> </app-post>
   }
 </div>

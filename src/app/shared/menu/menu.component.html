@@ -7,6 +7,7 @@
     ><mat-icon matListItemIcon>search</mat-icon
     ><span matListItemTitle>Search</span></a
   >
+  @if (isUserLoggedIn != null) {
   <a mat-list-item routerLink="/messages" (click)="closeMenu()"
     ><mat-icon matListItemIcon>mail</mat-icon
     ><span matListItemTitle>Messsages</span></a
@@ -15,8 +16,20 @@
     ><mat-icon matListItemIcon>person</mat-icon
     ><span matListItemTitle>Profile</span></a
   >
+  }
   <a mat-list-item routerLink="/settings" (click)="closeMenu()"
     ><mat-icon matListItemIcon>settings</mat-icon
     ><span matListItemTitle>Settings</span></a
   >
+  @if (isUserLoggedIn) {
+  <a mat-list-item (click)="logOut()"
+    ><mat-icon matListItemIcon>logout</mat-icon
+    ><span matListItemTitle>Logout</span></a
+  >
+  } @else {
+  <a mat-list-item routerLink="/auth" (click)="closeMenu()"
+    ><mat-icon matListItemIcon>login</mat-icon
+    ><span matListItemTitle>Login</span></a
+  >
+  }
 </mat-nav-list>

@@ -1,8 +1,9 @@
-import { Content } from './content';
 import { User } from './user';
 
 export interface Post {
   id: string;
-  poster: User;
-  content: Content;
+  userId: string;
+  text?: string;
+  attachmentUrlCollection?: string[];
+  creationDate: Date;
 }

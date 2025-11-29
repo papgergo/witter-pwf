@@ -4,5 +4,5 @@ export interface User {
   username: string;
   displayName: string;
   profilePictureUrl: string;
-  creationDate: number;
+  creationDate: Date;
 }

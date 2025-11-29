@@ -1,0 +1,15 @@
+<mat-card>
+  @if (authType === 'Login') {
+  <app-login></app-login>
+  <div>
+    <button mat-button (click)="toggleAuthType()">
+      Don't have an account?
+    </button>
+  </div>
+  } @else {
+  <app-register></app-register>
+  <button mat-button (click)="toggleAuthType()">
+    Already have an account?
+  </button>
+  }
+</mat-card>
