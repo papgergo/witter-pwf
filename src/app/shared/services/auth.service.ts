@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { User } from '../models/user';
-import { Observable, map, switchMap, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import {
   Auth,
   authState,
@@ -9,10 +9,8 @@ import {
   createUserWithEmailAndPassword,
   UserCredential,
 } from '@angular/fire/auth';
-import { Router } from '@angular/router';
 import { collection, doc, Firestore, setDoc } from '@angular/fire/firestore';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { UserFirestoreService } from './user-firestore.service';
 
 @Injectable({
   providedIn: 'root',

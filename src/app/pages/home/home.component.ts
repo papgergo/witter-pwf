@@ -5,7 +5,6 @@ import { PostFormComponent } from './post-form/post-form.component';
 import { PostService } from '../../shared/services/post.service';
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
-import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'app-home',

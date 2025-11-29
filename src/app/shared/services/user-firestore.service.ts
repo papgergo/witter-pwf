@@ -1,5 +1,13 @@
 import { inject, Injectable } from '@angular/core';
-import { doc, docData, Firestore, setDoc } from '@angular/fire/firestore';
+import {
+  addDoc,
+  collection,
+  CollectionReference,
+  doc,
+  docData,
+  Firestore,
+  setDoc,
+} from '@angular/fire/firestore';
 import { from, Observable } from 'rxjs';
 import { User } from '../models/user';
 
