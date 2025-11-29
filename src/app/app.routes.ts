@@ -4,16 +4,14 @@ import { MessagesComponent } from './pages/messages/messages.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { SearchComponent } from './pages/search/search.component';
+import { authGuard, pubicGuard } from './shared/guard/auth.guard';
+import { AuthFormComponent } from './pages/auth-form/auth-form.component';
 
 export const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full',
-  },
-  {
     path: 'home',
-    component: HomeComponent,
+    loadComponent: () =>
+      import('./pages/home/home.component').then((c) => c.HomeComponent),
   },
   {
     path: 'search',
@@ -22,14 +20,21 @@ export const routes: Routes = [
   {
     path: 'messages',
     component: MessagesComponent,
+    canActivate: [authGuard],
   },
   {
     path: 'profile',
     component: ProfileComponent,
+    canActivate: [authGuard],
   },
   {
     path: 'settings',
     component: SettingsComponent,
+  },
+  {
+    path: 'auth',
+    component: AuthFormComponent,
+    canActivate: [pubicGuard],
   },
   {
     path: '**',

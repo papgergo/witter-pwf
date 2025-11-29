@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Post } from '../models/post';
 import { User } from '../models/user';
-import { Content } from '../models/content';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,62 +9,44 @@ import { Content } from '../models/content';
 export class ManagementService {
   private db!: IDBDatabase;
   private readonly objectStoreName = 'posts';
-  public readonly posts: Post[] = [];
+  private readonly posts: Post[] = [];
+  private readonly postsChange$ = new BehaviorSubject(this.posts);
 
   constructor() {
     this.initIndexedDB();
   }
 
-  /*
-  private post: Post = {
-    id: '0',
-    poster: {
-      id: 'asd1',
-      email: 'asd1',
-      username: '@pista',
-      displayName: 'Pista',
-      profilePictureUrl: 'asd',
-      creationDate: Date.now(),
-    },
-    content: {
-      text: 'Sziasztok!',
-      attachmentCollection: [
-        {
-          fileUrl:
-            'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bGl0dGxlJTIwY2F0fGVufDB8fDB8fHww&fm=jpg&q=60&w=3000',
-          id: 'asd',
-        },
-      ],
-    },
-  };
-  */
-
-  public createPost(poster: User, content: Content): boolean {
-    const post: Post = {
-      id: crypto.randomUUID(),
-      poster: {
-        id: 'asd1',
-        email: 'asd1',
-        username: '@pista',
-        displayName: 'Pista',
-        profilePictureUrl: 'asd',
-        creationDate: Date.now(),
-      },
-      content: content,
-    };
+  public createPost(post: Post): boolean {
+    const newPost: Post = post;
     const objectStore = this.db
       .transaction(this.objectStoreName, 'readwrite')
       .objectStore(this.objectStoreName);
-    const request = objectStore.add(post);
+    const request = objectStore.add(newPost);
 
     request.onsuccess = (event: any) => {
-      this.posts.unshift(post);
+      this.posts.unshift(newPost);
+      this.syncPosts();
     };
 
     request.onerror = (event: any) => {
       console.log('Error adding item:', event.target.error);
     };
     return true;
+  }
+
+  public deletePost(postId: string): void {
+    const objectStore = this.db
+      .transaction(this.objectStoreName, 'readwrite')
+      .objectStore(this.objectStoreName);
+    const request = objectStore.delete(postId);
+
+    request.onsuccess = () => {
+      const index = this.posts.findIndex((p) => p.id === postId);
+      if (index !== -1) {
+        this.posts.splice(index, 1);
+        this.syncPosts();
+      }
+    };
   }
 
   private initIndexedDB() {
@@ -80,8 +62,6 @@ export class ManagementService {
       const objectStore = db.createObjectStore(this.objectStoreName, {
         keyPath: 'id',
       });
-
-      objectStore.createIndex('content', 'content', { unique: false });
     };
 
     request.onsuccess = (event: any) => {
@@ -101,7 +81,18 @@ export class ManagementService {
         this.posts.push(cursor.value);
 
         cursor.continue();
+      } else {
+        this.syncPosts();
       }
     };
+  }
+
+  public get posts$(): Observable<Post[]> {
+    return this.postsChange$.asObservable();
+  }
+
+  private syncPosts(): void {
+    //TODO
+    //this.postsChange$.next([...this.posts]);
   }
 }
