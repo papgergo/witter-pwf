@@ -19,12 +19,14 @@ export class UserFirestoreService {
   private readonly usersCollection = 'Users';
 
   public getUser(userId: string): Observable<User> {
-    const userRef = doc(this.firestore, this.usersCollection, userId);
-    return docData(userRef) as Observable<User>;
+    return docData(doc(this.getCollectionRef(), userId)) as Observable<User>;
   }
 
-  public createUser(userId: string, userData: Partial<User>): Observable<void> {
-    const userRef = doc(this.firestore, this.usersCollection, userId);
-    return from(setDoc(userRef, userData));
+  public createUser(userId: string, userData: Partial<User>): Observable<any> {
+    return from(addDoc(this.getCollectionRef(), userData));
+  }
+
+  private getCollectionRef(): CollectionReference {
+    return collection(this.firestore, this.usersCollection);
   }
 }
