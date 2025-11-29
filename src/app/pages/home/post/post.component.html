@@ -1,20 +1,25 @@
 @if (post) {
-<mat-card class="post" appearance="outlined">
+<mat-card *ngIf="poster$ | async as poster" class="post" appearance="outlined">
   <mat-card-header>
     <div mat-card-avatar class="poster-profile-picture">
       <mat-icon>person</mat-icon>
     </div>
-    <mat-card-title>{{ post.poster.displayName }}</mat-card-title>
-    <mat-card-subtitle>{{ post.poster.username }}</mat-card-subtitle>
+    @if (isOwner$ | async) {
+    <button mat-icon-button (click)="deletePost()">
+      <mat-icon> delete </mat-icon>
+    </button>
+    }
+    <mat-card-title>{{ poster.displayName }}</mat-card-title>
+    <mat-card-subtitle>{{ "@" + poster.username }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    @if (post.content.text) {
-    <p>{{ post.content.text }}</p>
-    } @if (post.content.attachmentCollection) { @for (attachment of
-    post.content.attachmentCollection; track $index) {
-    <div class="attachment">
-      <img [src]="attachment.fileUrl" />
-    </div>
+    @if (post.text) {
+    <p>{{ post.text }}</p>
+    } @if (post.attachmentUrlCollection) { @for (attachment of
+    post.attachmentUrlCollection; track $index) {
+    <!-- <div class="attachment">
+      <img [src]="atta" />
+    </div> -->
     } }
   </mat-card-content>
   <mat-card-actions>

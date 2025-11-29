@@ -1,17 +1,15 @@
 import { Component } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from '../../../shared/services/auth.service';
+import { Post } from '../../../shared/models/post';
+import { PostService } from '../../../shared/services/post.service';
+import { firstValueFrom } from 'rxjs';
 import { MatInputModule } from '@angular/material/input';
-import { ManagementService } from '../../../shared/services/management.service';
-import { isThisTypeNode } from 'typescript';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { UserFirestoreService } from '../../../shared/services/user-firestore.service';
 
 @Component({
   selector: 'app-post-form',
@@ -30,28 +28,30 @@ export class PostFormComponent {
   public postForm: FormGroup;
 
   constructor(
-    formBuilder: FormBuilder,
-    private managementService: ManagementService
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private postService: PostService,
+    private userFireStoreService: UserFirestoreService
   ) {
     this.postForm = formBuilder.group({
       text: [''],
     });
   }
 
-  onSubmit() {
-    if (this.postForm.valid) {
-      this.managementService.createPost(
-        {
-          id: crypto.randomUUID(),
-          email: 'asd1',
-          username: '@pista',
-          displayName: 'Pista',
-          profilePictureUrl: 'asd',
-          creationDate: Date.now(),
-        },
-        { text: this.postForm.value.text }
-      );
-      this.postForm.reset(this.postForm.value.text);
+  async onSubmit() {
+    const fireUser = await firstValueFrom(this.authService.user$);
+    if (!fireUser) {
+      console.error('User not logged in, cannot create post.');
+      return;
     }
+
+    const newPost: Post = {
+      id: crypto.randomUUID(),
+      userId: fireUser.uid,
+      text: this.postForm.value.text,
+      creationDate: new Date(),
+    };
+    this.postService.createPost(newPost);
+    this.postForm.reset({ text: '' }, { emitEvent: false });
   }
 }

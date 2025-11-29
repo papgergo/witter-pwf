@@ -4,17 +4,11 @@
       <div mat-card-avatar class="poster-profile-picture">
         <mat-icon>person</mat-icon>
       </div>
-      <form [formGroup]="postForm" class="post-form">
+      <form [formGroup]="postForm" class="post-form" (ngSubmit)="onSubmit()">
         <mat-form-field appearance="outline">
           <textarea matInput formControlName="text"></textarea>
         </mat-form-field>
-        <button
-          mat-flat-button
-          (click)="onSubmit()"
-          [disabled]="!postForm.valid"
-        >
-          Post
-        </button>
+        <button mat-flat-button>Post</button>
       </form>
     </div>
   </mat-card-content>
