@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { User } from '../models/user';
-import { Observable } from 'rxjs';
+import { Observable, of, switchMap } from 'rxjs';
 import {
   Auth,
   authState,
@@ -11,6 +11,7 @@ import {
 } from '@angular/fire/auth';
 import { collection, doc, Firestore, setDoc } from '@angular/fire/firestore';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthFirestoreService } from './auth-firestore.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,8 +20,14 @@ export class AuthService {
   private _snackBar = inject(MatSnackBar);
   private readonly storageKey = 'login';
   user$: Observable<FireUser | null>;
-  constructor(private auth: Auth, private firestore: Firestore) {
+  loggedInUser$!: Observable<User | null>;
+  constructor(
+    private auth: Auth,
+    private firestore: Firestore,
+    private authFireStoreService: AuthFirestoreService
+  ) {
     this.user$ = authState(this.auth);
+    this.setLogedInUser();
   }
 
   async signIn(email: string, password: string): Promise<UserCredential> {
@@ -32,6 +39,9 @@ export class AuthService {
     if (userCredential.user) {
       sessionStorage.setItem(this.storageKey, userCredential.user.uid);
     }
+
+    this.setLogedInUser();
+
     return userCredential;
   }
 
@@ -50,7 +60,6 @@ export class AuthService {
 
       await this.createUserData(userCredential.user.uid, {
         ...userData,
-        id: userCredential.user.uid,
         email: email,
       });
 
@@ -84,7 +93,22 @@ export class AuthService {
     });
   }
 
-  getLoggedInUser(): Observable<FireUser | null> {
+  setLogedInUser(): void {
+    this.loggedInUser$ = this.user$.pipe(
+      switchMap((user) => {
+        if (user) {
+          return this.authFireStoreService.getUser(user.uid);
+        }
+        return of(null);
+      })
+    );
+  }
+
+  getLoggedInFireUser(): Observable<FireUser | null> {
     return this.user$;
+  }
+
+  getLoggedInUser(): Observable<User | null> {
+    return this.loggedInUser$;
   }
 }

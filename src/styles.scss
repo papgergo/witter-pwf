@@ -8,3 +8,15 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+a {
+  text-decoration: none;
+  color: unset;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+.username {
+  font-size: medium;
+  color: gray;
+}

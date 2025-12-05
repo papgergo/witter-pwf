@@ -1,0 +1,21 @@
+<div class="main-container">
+  <h2>Messages</h2>
+  @for (conversation of conversations$ | async; track conversation.id) { @if
+  (conversation.otherUser$ | async; as otherUser) {
+  <mat-card class="post" appearance="outlined">
+    <a routerLink="/messages/{{ conversation.id }}">
+      <mat-card-header>
+        <div mat-card-avatar poster-profile-picture>
+          <mat-icon>person</mat-icon>
+        </div>
+        <mat-card-title>
+          {{ otherUser.displayName }}
+          <span class="username"> {{ "@" + otherUser.username }}</span>
+        </mat-card-title>
+        <mat-card-subtitle></mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content> </mat-card-content
+    ></a>
+  </mat-card>
+  }}
+</div>

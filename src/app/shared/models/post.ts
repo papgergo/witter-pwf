@@ -1,9 +1,7 @@
-import { User } from './user';
-
 export interface Post {
-  id: string;
+  id?: string;
   userId: string;
-  text?: string;
-  attachmentUrlCollection?: string[];
-  creationDate: Date;
+  text: string;
+  creationDate: string;
+  likeCount: number;
 }
