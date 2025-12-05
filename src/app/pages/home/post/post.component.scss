@@ -9,9 +9,17 @@
 mat-card {
   border-radius: 0px;
 }
+
 .attachment {
   width: 150px;
 }
 .attachment img {
   width: 100%;
+}
+
+.liked {
+  background-color: var(--mat-sys-primary);
+}
+.postRedirect {
+  text-decoration: none;
 }

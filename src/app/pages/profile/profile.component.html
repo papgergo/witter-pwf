@@ -1,36 +1,20 @@
-<!-- <div class="main-container">
+@if (viewedUserData$ |async; as user) {
+<div class="main-container">
   <mat-card class="profile-header">
     <mat-card-header>
       <div mat-card-avatar class="currentUser-profile-picture">
         <mat-icon>person</mat-icon>
       </div>
-      <mat-card-title>{{ currentUser.displayName }}</mat-card-title>
-      <mat-card-subtitle>{{ currentUser.username }}</mat-card-subtitle>
+      <mat-card-title
+        >{{ user.displayName
+        }}<span class="username"> {{ "@" + user.username }}</span></mat-card-title
+      >
+      <button mat-flat-button (click)="createConversation()">Message</button>
+      <mat-card-subtitle></mat-card-subtitle>
     </mat-card-header>
   </mat-card>
-  @for (post of postCollection; track $index) {
-  <mat-card class="post" appearance="outlined">
-    <mat-card-header>
-      <div mat-card-avatar poster-profile-picture>
-        <mat-icon>person</mat-icon>
-      </div>
-      <mat-card-title>{{ post.poster.displayName }}</mat-card-title>
-      <mat-card-subtitle>{{ post.poster.username }}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      @if (post.content.text) {
-      <p>{{ post.content.text }}</p>
-      } @if (post.content.attachmentCollection) { @for (attachment of
-      post.content.attachmentCollection; track $index) {
-      <div class="attachment">
-        <img [src]="attachment.fileUrl" />
-      </div>
-      } }
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-button>Like</button>
-      <button mat-button>Repost</button>
-    </mat-card-actions>
-  </mat-card>
+  @for (post of postCollection$ | async; track post.id) {
+  <app-post [post]="post"></app-post>
   }
-</div> -->
+</div>
+}

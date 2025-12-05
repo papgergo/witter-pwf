@@ -3,44 +3,63 @@ import { Post } from '../../../shared/models/post';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { UserFirestoreService } from '../../../shared/services/user-firestore.service';
+import { AuthFirestoreService } from '../../../shared/services/auth-firestore.service';
 import { User } from '../../../shared/models/user';
-import { Observable, map, switchMap, of } from 'rxjs';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { Observable, map, switchMap, of, take } from 'rxjs';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { AuthService } from '../../../shared/services/auth.service';
 import { PostService } from '../../../shared/services/post.service';
+import { RouterLink } from '@angular/router';
+import { LikeService } from '../../../shared/services/like.service';
 
 @Component({
   selector: 'app-post',
-  imports: [MatCardModule, MatButtonModule, MatIconModule, AsyncPipe, NgIf],
+  imports: [MatCardModule, MatButtonModule, MatIconModule, AsyncPipe, RouterLink, NgClass],
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss',
 })
 export class PostComponent implements OnInit {
-  @Input({ required: true }) public post?: Post;
+  @Input() public post?: Post;
   public poster$!: Observable<User>;
-  public isOwner$!: Observable<boolean>;
-
+  public loggedInUser$: Observable<User | null>;
+  public isOwner$!: Observable<boolean | undefined>;
+  public isLiked$!: Observable<boolean>;
   constructor(
-    private userFirestoreService: UserFirestoreService,
+    private userFirestoreService: AuthFirestoreService,
+    private likeService: LikeService,
     private authService: AuthService,
     private postService: PostService
-  ) {}
+  ) {
+    this.loggedInUser$ = this.authService.getLoggedInUser();
+  }
 
   deletePost() {
     this.postService.removePost(this.post?.id!);
   }
 
   ngOnInit(): void {
-    if (this.post?.userId) {
-      // Re-create poster observable whenever auth state changes
-      this.poster$ = this.authService.user$.pipe(
-        switchMap(() => this.userFirestoreService.getUser(this.post!.userId))
-      );
+    if (!this.post) return;
 
-      this.isOwner$ = this.authService.user$.pipe(
-        map((loggedInUser) => loggedInUser?.uid === this.post?.userId)
-      );
-    }
+    this.poster$ = this.userFirestoreService.getUser(this.post.userId);
+
+    this.isOwner$ = this.loggedInUser$.pipe(map((user) => user?.id === this.post?.userId));
+
+    this.isLiked$ = this.loggedInUser$.pipe(
+      switchMap((user) => {
+        if (!user) {
+          return of(false);
+        }
+        return this.likeService.getUserLike(this.post!.id!, user.id!);
+      })
+    );
+  }
+
+  likePost() {
+    this.loggedInUser$
+      .pipe(
+        take(1),
+        switchMap((user) => this.likeService.likePost(this.post!.id!, user!.id!))
+      )
+      .subscribe();
   }
 }

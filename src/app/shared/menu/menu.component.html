@@ -7,7 +7,7 @@
     ><mat-icon matListItemIcon>search</mat-icon
     ><span matListItemTitle>Search</span></a
   >
-  @if (isUserLoggedIn != null) {
+  @if (isUserLoggedIn$ |async) {
   <a mat-list-item routerLink="/messages" (click)="closeMenu()"
     ><mat-icon matListItemIcon>mail</mat-icon
     ><span matListItemTitle>Messsages</span></a
@@ -21,8 +21,8 @@
     ><mat-icon matListItemIcon>settings</mat-icon
     ><span matListItemTitle>Settings</span></a
   >
-  @if (isUserLoggedIn) {
-  <a mat-list-item (click)="logOut()"
+  @if (isUserLoggedIn$ | async) {
+  <a mat-list-item (click)="logOut()" (click)="closeMenu()"
     ><mat-icon matListItemIcon>logout</mat-icon
     ><span matListItemTitle>Logout</span></a
   >

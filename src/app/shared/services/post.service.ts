@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, take } from 'rxjs';
+import { map, Observable, shareReplay, switchMap, take } from 'rxjs';
 import { Post } from '../models/post';
 import { PostFireStoreService } from './post-firestore.service';
 
@@ -12,7 +12,7 @@ export class PostService {
   public selectedPosts$: Observable<Post[]>;
 
   constructor(private postFireStoreService: PostFireStoreService) {
-    this.posts$ = this.postFireStoreService.getPosts();
+    this.posts$ = this.postFireStoreService.getPosts().pipe(shareReplay(1));
 
     this.selectedPosts$ = this.posts$;
   }
@@ -23,5 +23,15 @@ export class PostService {
 
   public removePost(postId: string): void {
     this.postFireStoreService.removePost(postId).pipe(take(1)).subscribe();
+  }
+
+  public filterPostsByUser(userId: string): void {
+    this.selectedPosts$ = this.posts$.pipe(
+      map((posts) => posts.filter((post) => post.userId === userId))
+    );
+  }
+
+  public resetPostFilter(): void {
+    this.selectedPosts$ = this.posts$;
   }
 }

@@ -1,34 +1,32 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { MatSidenav } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { Subscription } from 'rxjs';
+import { map, Observable, Subscription, switchMap, take } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-menu',
-  imports: [MatListModule, MatIconModule, RouterLink, CommonModule],
+  imports: [
+    MatListModule,
+    MatIconModule,
+    RouterLink,
+    CommonModule,
+    MatSidenavModule,
+  ],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss',
 })
-export class MenuComponent implements OnInit, OnDestroy {
-  isUserLoggedIn: boolean = false;
-
-  private authSubscription!: Subscription;
+export class MenuComponent {
+  isUserLoggedIn$: Observable<boolean>;
 
   @Input() sidenav!: MatSidenav;
-  constructor(private authService: AuthService, private router: Router) {}
-
-  ngOnInit(): void {
-    this.authSubscription = this.authService.user$.subscribe((user) => {
-      this.isUserLoggedIn = !!user;
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.authSubscription.unsubscribe();
+  constructor(private authService: AuthService, private router: Router) {
+    this.isUserLoggedIn$ = this.authService
+      .getLoggedInUser()
+      .pipe(map((user) => !!user));
   }
 
   closeMenu() {

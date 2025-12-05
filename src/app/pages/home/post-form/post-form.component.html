@@ -8,7 +8,7 @@
         <mat-form-field appearance="outline">
           <textarea matInput formControlName="text"></textarea>
         </mat-form-field>
-        <button mat-flat-button>Post</button>
+        <button mat-flat-button [disabled]="postForm.value.text.length < 1">Post</button>
       </form>
     </div>
   </mat-card-content>
