@@ -7,16 +7,29 @@
       </div>
       <mat-card-title
         >{{ user.displayName
-        }}<span class="username"> {{ "@" + user.username }}</span></mat-card-title
+        }}<span class="username"> {{ user.username | username }}</span></mat-card-title
       >
-      @if (loggedInUserData$ | async; as loggedInUser) { @if (loggedInUser != user || !loggedInUser)
-      {
-      <button mat-icon-button (click)="createConversation()"><mat-icon>mail</mat-icon></button>
-
+      @if ((loggedInUserData$ | async); as loggedInUser) { @if (loggedInUser.id !== user.id) {
+      <button mat-fab extended (click)="createConversation()">
+        <mat-icon>mail</mat-icon>Message
+      </button>
       } }
 
       <mat-card-subtitle></mat-card-subtitle>
     </mat-card-header>
+    <mat-card-content>
+      @if ((loggedInUserData$ | async); as loggedInUser) { @if (loggedInUser.id === user.id) {
+      <form [formGroup]="usernameForm" (ngSubmit)="changeUsername()" class="username-form">
+        <mat-form-field appearance="outline">
+          <mat-label>New Username</mat-label>
+          <input matInput formControlName="username" />
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" [disabled]="usernameForm.invalid">
+          Change Username
+        </button>
+      </form>
+      } }
+    </mat-card-content>
   </mat-card>
   @for (post of postCollection$ | async; track post.id) {
   <app-post [post]="post"></app-post>

@@ -10,7 +10,7 @@
         </div>
         <mat-card-title>
           {{ otherUser.displayName }}
-          <span class="username"> {{ "@" + otherUser.username }}</span>
+          <span class="username"> {{ otherUser.username | username }}</span>
         </mat-card-title>
         <mat-card-subtitle></mat-card-subtitle>
       </mat-card-header>

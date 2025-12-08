@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/witter/browser",
+    "public": "dist/witter",
     "ignore": [
       "firebase.json",
       "**/.*",

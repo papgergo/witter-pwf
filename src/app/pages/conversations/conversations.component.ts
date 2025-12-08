@@ -6,10 +6,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { AsyncPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ConversationWithUserData } from '../../shared/models/conversation';
+import { UsernamePipe } from '../../shared/pipe/username.pipe';
 
 @Component({
   selector: 'app-conversations',
-  imports: [MatCardModule, MatIconModule, AsyncPipe, RouterLink],
+  imports: [MatCardModule, MatIconModule, AsyncPipe, RouterLink, UsernamePipe],
   templateUrl: './conversations.component.html',
   styleUrls: ['./conversations.component.scss'],
 })

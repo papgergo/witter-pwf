@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { User } from '../models/user';
-import { Observable, of, switchMap } from 'rxjs';
+import { Observable, of, switchMap, take } from 'rxjs';
 import {
   Auth,
   authState,
@@ -31,11 +31,7 @@ export class AuthService {
   }
 
   async signIn(email: string, password: string): Promise<UserCredential> {
-    const userCredential = await signInWithEmailAndPassword(
-      this.auth,
-      email,
-      password
-    );
+    const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
     if (userCredential.user) {
       sessionStorage.setItem(this.storageKey, userCredential.user.uid);
     }
@@ -52,11 +48,7 @@ export class AuthService {
     userData: Partial<User>
   ): Promise<UserCredential> {
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        this.auth,
-        email,
-        password
-      );
+      const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
 
       await this.createUserData(userCredential.user.uid, {
         ...userData,
@@ -70,10 +62,7 @@ export class AuthService {
     }
   }
 
-  private async createUserData(
-    userId: string,
-    userData: Partial<User>
-  ): Promise<void> {
+  private async createUserData(userId: string, userData: Partial<User>): Promise<void> {
     const userRef = doc(collection(this.firestore, 'Users'), userId);
 
     return setDoc(userRef, userData);
@@ -83,6 +72,10 @@ export class AuthService {
     sessionStorage.removeItem(this.storageKey);
     await this.auth.signOut();
     //await clearIndexedDbPersistence(this.firestore);
+  }
+
+  public updateUsername(userId: string, newUsername: string): void {
+    this.authFireStoreService.updateUsername(userId, newUsername).pipe(take(1)).subscribe();
   }
 
   openSnackBar(message: string) {

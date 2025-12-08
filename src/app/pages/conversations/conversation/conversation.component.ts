@@ -1,12 +1,5 @@
 import { Component, Input } from '@angular/core';
-import {
-  BehaviorSubject,
-  filter,
-  firstValueFrom,
-  Observable,
-  switchMap,
-  take,
-} from 'rxjs';
+import { BehaviorSubject, filter, firstValueFrom, Observable, switchMap, take } from 'rxjs';
 import { Message } from '../../../shared/models/message';
 import { MessageService } from '../../../shared/services/message.service';
 import { MatCardModule } from '@angular/material/card';
@@ -26,6 +19,7 @@ import {
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
+import { UsernamePipe } from '../../../shared/pipe/username.pipe';
 
 @Component({
   selector: 'app-conversation',
@@ -41,6 +35,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatInputModule,
     FormsModule,
     MatButtonModule,
+    UsernamePipe,
   ],
   templateUrl: './conversation.component.html',
   styleUrl: './conversation.component.scss',

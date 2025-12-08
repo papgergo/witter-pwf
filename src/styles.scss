@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @use "mixins";
 
+$username-color: gray;
 html,
 body {
   height: 100%;
@@ -12,12 +13,12 @@ body {
 a {
   text-decoration: none;
   color: unset;
-}
-a:hover {
-  text-decoration: underline;
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .username {
   font-size: medium;
-  color: gray;
+  color: $username-color;
 }

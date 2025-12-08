@@ -7,7 +7,7 @@
 
     <mat-card-title>
       <a routerLink="/profile/{{ post.userId }}">{{ poster.displayName }}</a>
-      <span class="username"> {{ "@" + poster.username }}</span>
+      <span class="username"> {{ poster.username | username }}</span>
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
@@ -19,10 +19,14 @@
   </mat-card-content>
   <mat-card-actions>
     <div class="post-interactions">
-      <button mat-button (click)="likePost()" [ngClass]="{ liked: this.isLiked$ | async }">
+      <button
+        mat-button
+        (click)="likePost()"
+        [ngClass]="{ liked: this.isLiked$ | async }"
+        [disabled]="!(loggedInUser$ | async)"
+      >
         {{ post.likeCount }} Like
       </button>
-      <button mat-button>Repost</button>
     </div>
     <div class="post-info">
       @if (isOwner$ | async) {

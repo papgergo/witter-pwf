@@ -58,8 +58,8 @@ export class PostFireStoreService {
     );
   }
 
-  public createPost(post: Post): Observable<any> {
-    return from(addDoc(this.getCollectionRef(), post));
+  public createPost(post: Post): Observable<string> {
+    return from(addDoc(this.getCollectionRef(), post)).pipe(map((docRef) => docRef.id));
   }
 
   public removePost(postId: string): Observable<any> {

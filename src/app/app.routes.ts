@@ -7,10 +7,6 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/home/home.component').then((c) => c.HomeComponent),
   },
   {
-    path: 'search',
-    loadComponent: () => import('./pages/search/search.component').then((c) => c.SearchComponent),
-  },
-  {
     path: 'post/:postId',
     loadComponent: () =>
       import('./pages/home/post-page/post-page.component').then((c) => c.PostPageComponent),

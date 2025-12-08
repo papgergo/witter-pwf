@@ -2,7 +2,7 @@
 
 .messages-container {
   @include mixin.main-container;
-  height: calc(100vh - 64px); /* Use height to define a fixed size */
+  height: calc(100vh - 64px);
 }
 
 mat-card {

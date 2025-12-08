@@ -11,11 +11,20 @@ import { AuthService } from '../../../shared/services/auth.service';
 import { PostService } from '../../../shared/services/post.service';
 import { RouterLink } from '@angular/router';
 import { LikeService } from '../../../shared/services/like.service';
-import { DatePipe } from '../../../shared/pipe/date.pipe';
+import { UsernamePipe } from '../../../shared/pipe/username.pipe';
+import { ManagementService } from '../../../shared/services/management.service';
 
 @Component({
   selector: 'app-post',
-  imports: [MatCardModule, MatButtonModule, MatIconModule, AsyncPipe, RouterLink, NgClass],
+  imports: [
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    AsyncPipe,
+    RouterLink,
+    NgClass,
+    UsernamePipe,
+  ],
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss',
 })
@@ -29,22 +38,20 @@ export class PostComponent implements OnInit {
     private userFirestoreService: AuthFirestoreService,
     private likeService: LikeService,
     private authService: AuthService,
-    private postService: PostService
+    private postService: PostService,
+    private managementService: ManagementService
   ) {
     this.loggedInUser$ = this.authService.getLoggedInUser();
   }
 
   deletePost() {
-    this.postService.removePost(this.post?.id!);
+    this.managementService.deletePost(this.post?.id!);
   }
 
   ngOnInit(): void {
     if (!this.post) return;
-
     this.poster$ = this.userFirestoreService.getUser(this.post.userId);
-
     this.isOwner$ = this.loggedInUser$.pipe(map((user) => user?.id === this.post?.userId));
-
     this.isLiked$ = this.loggedInUser$.pipe(
       switchMap((user) => {
         if (!user) {

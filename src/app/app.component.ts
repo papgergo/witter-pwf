@@ -6,6 +6,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterOutlet } from '@angular/router';
 import { MenuComponent } from './shared/menu/menu.component';
 import { SwUpdate } from '@angular/service-worker';
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -27,20 +28,16 @@ export class AppComponent implements OnInit, OnDestroy {
   private offlineCallback = () => console.log('offline');
 
   ngOnInit(): void {
-    /*
-    interval(3000).subscribe(() => {
-      this.swUpdate.checkForUpdate().then((update) => {
-        if (update) {
-          alert('new changes');
-
-          window.location.reload();
-        }
-      });
-    });
-    */
-    window.addEventListener('online', this.onlineCallback);
-
-    window.addEventListener('offline', this.offlineCallback);
+    // interval(3000).subscribe(() => {
+    //   this.swUpdate.checkForUpdate().then((update) => {
+    //     if (update) {
+    //       alert('new changes');
+    //       window.location.reload();
+    //     }
+    //   });
+    // });
+    // window.addEventListener('online', this.onlineCallback);
+    // window.addEventListener('offline', this.offlineCallback);
   }
 
   onToggleSidenav(sidenav: MatSidenav) {

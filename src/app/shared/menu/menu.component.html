@@ -2,17 +2,14 @@
   <a mat-list-item routerLink="/home" (click)="closeMenu()"
     ><mat-icon matListItemIcon>home</mat-icon><span matListItemTitle>Home</span></a
   >
-  <a mat-list-item routerLink="/search" (click)="closeMenu()"
-    ><mat-icon matListItemIcon>search</mat-icon><span matListItemTitle>Search</span></a
-  >
-  @if (isUserLoggedIn$ |async) {
+  @if (loggedInUser$ |async; as user) {
   <a mat-list-item routerLink="/messages" (click)="closeMenu()"
     ><mat-icon matListItemIcon>mail</mat-icon><span matListItemTitle>Messsages</span></a
   >
-  <a mat-list-item routerLink="/profile" (click)="closeMenu()"
+  <a mat-list-item routerLink="/profile/{{ user.id }}" (click)="closeMenu()"
     ><mat-icon matListItemIcon>person</mat-icon><span matListItemTitle>Profile</span></a
   >
-  } @if (isUserLoggedIn$ | async) {
+  } @if (loggedInUser$ | async) {
   <a mat-list-item (click)="logOut()" (click)="closeMenu()"
     ><mat-icon matListItemIcon>logout</mat-icon><span matListItemTitle>Logout</span></a
   >

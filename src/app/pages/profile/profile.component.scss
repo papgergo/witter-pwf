@@ -10,6 +10,9 @@
 mat-card {
   @include mixin.mat-card-stlye;
 }
+mat-card-header {
+  padding-bottom: 16px;
+}
 
 .attachment {
   width: 150px;
@@ -19,4 +22,7 @@ mat-card {
 }
 .profile-header {
   width: 100%;
+}
+.username-form > * {
+  padding-right: 15px;
 }

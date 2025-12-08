@@ -9,7 +9,7 @@
         ><a routerLink="/profile/{{ otherUser.id }}">{{
           otherUser.displayName
         }}</a> </mat-card-title
-      ><mat-card-subtitle>{{ "@" + otherUser.username }}</mat-card-subtitle></mat-card-header
+      ><mat-card-subtitle>{{ otherUser.username | username }}</mat-card-subtitle></mat-card-header
     >
 
     <mat-card-content>

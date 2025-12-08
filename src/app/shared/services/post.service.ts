@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable, shareReplay, switchMap, take } from 'rxjs';
 import { Post } from '../models/post';
 import { PostFireStoreService } from './post-firestore.service';
+import { ManagementService } from './management.service';
 
 @Injectable({
   providedIn: 'root',

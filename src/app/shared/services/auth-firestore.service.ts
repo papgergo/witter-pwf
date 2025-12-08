@@ -1,12 +1,15 @@
 import { inject, Injectable } from '@angular/core';
 import {
+  addDoc,
   collection,
   CollectionReference,
   doc,
   docData,
   Firestore,
+  setDoc,
+  updateDoc,
 } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { User } from '../models/user';
 
 @Injectable({
@@ -20,6 +23,14 @@ export class AuthFirestoreService {
     return docData(doc(this.getCollectionRef(), userId), {
       idField: 'id',
     }) as Observable<User>;
+  }
+
+  public updateUsername(userId: string, newUsername: string): Observable<any> {
+    return from(
+      updateDoc(doc(this.firestore, this.usersCollection, userId), {
+        displayName: newUsername,
+      })
+    );
   }
   private getCollectionRef(): CollectionReference {
     return collection(this.firestore, this.usersCollection);

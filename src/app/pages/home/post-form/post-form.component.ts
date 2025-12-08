@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { AuthService } from '../../../shared/services/auth.service';
 import { Post } from '../../../shared/models/post';
 import { PostService } from '../../../shared/services/post.service';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,6 +11,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { ReplyService } from '../../../shared/services/reply.service';
 import { ManagementService } from '../../../shared/services/management.service';
+import { User } from '../../../shared/models/user';
+import { AsyncPipe } from '@angular/common';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-post-form',
@@ -21,6 +24,8 @@ import { ManagementService } from '../../../shared/services/management.service';
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
+    AsyncPipe,
+    MatTooltipModule,
   ],
   templateUrl: './post-form.component.html',
   styleUrl: './post-form.component.scss',
@@ -28,6 +33,7 @@ import { ManagementService } from '../../../shared/services/management.service';
 export class PostFormComponent {
   @Input() postId?: string;
   public postForm: FormGroup;
+  public loggedInUser$: Observable<User | null>;
 
   constructor(
     formBuilder: FormBuilder,
@@ -38,6 +44,7 @@ export class PostFormComponent {
     this.postForm = formBuilder.group({
       text: ['', Validators.required],
     });
+    this.loggedInUser$ = authService.getLoggedInUser();
   }
 
   async onSubmit() {

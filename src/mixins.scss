@@ -11,8 +11,11 @@
   max-width: 400px;
   margin: auto;
 }
+
+$border-color: rgba(110, 110, 110, 0.3);
 @mixin mat-card-stlye {
   border-radius: 0px;
+  border-color: $border-color;
 }
 
 @mixin auth-stlyes {

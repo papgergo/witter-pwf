@@ -4,29 +4,22 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { map, Observable, Subscription, switchMap, take } from 'rxjs';
+import { firstValueFrom, map, Observable, Subscription, switchMap, take } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { User } from '../models/user';
 
 @Component({
   selector: 'app-menu',
-  imports: [
-    MatListModule,
-    MatIconModule,
-    RouterLink,
-    CommonModule,
-    MatSidenavModule,
-  ],
+  imports: [MatListModule, MatIconModule, RouterLink, CommonModule, MatSidenavModule],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss',
 })
 export class MenuComponent {
-  isUserLoggedIn$: Observable<boolean>;
+  public loggedInUser$!: Observable<User | null>;
 
   @Input() sidenav!: MatSidenav;
   constructor(private authService: AuthService, private router: Router) {
-    this.isUserLoggedIn$ = this.authService
-      .getLoggedInUser()
-      .pipe(map((user) => !!user));
+    this.loggedInUser$ = this.authService.getLoggedInUser();
   }
 
   closeMenu() {
