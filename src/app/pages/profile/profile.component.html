@@ -9,7 +9,12 @@
         >{{ user.displayName
         }}<span class="username"> {{ "@" + user.username }}</span></mat-card-title
       >
-      <button mat-flat-button (click)="createConversation()">Message</button>
+      @if (loggedInUserData$ | async; as loggedInUser) { @if (loggedInUser != user || !loggedInUser)
+      {
+      <button mat-icon-button (click)="createConversation()"><mat-icon>mail</mat-icon></button>
+
+      } }
+
       <mat-card-subtitle></mat-card-subtitle>
     </mat-card-header>
   </mat-card>

@@ -11,6 +11,7 @@ import { AuthService } from '../../../shared/services/auth.service';
 import { PostService } from '../../../shared/services/post.service';
 import { RouterLink } from '@angular/router';
 import { LikeService } from '../../../shared/services/like.service';
+import { DatePipe } from '../../../shared/pipe/date.pipe';
 
 @Component({
   selector: 'app-post',

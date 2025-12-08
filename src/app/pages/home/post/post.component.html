@@ -4,11 +4,7 @@
     <div mat-card-avatar class="poster-profile-picture">
       <mat-icon>person</mat-icon>
     </div>
-    @if (isOwner$ | async) {
-    <button mat-icon-button (click)="deletePost()">
-      <mat-icon> delete </mat-icon>
-    </button>
-    }
+
     <mat-card-title>
       <a routerLink="/profile/{{ post.userId }}">{{ poster.displayName }}</a>
       <span class="username"> {{ "@" + poster.username }}</span>
@@ -22,10 +18,19 @@
     }
   </mat-card-content>
   <mat-card-actions>
-    <button mat-button (click)="likePost()" [ngClass]="{ liked: this.isLiked$ | async }">
-      {{ post.likeCount }} Like
-    </button>
-    <button mat-button>Repost</button>
+    <div class="post-interactions">
+      <button mat-button (click)="likePost()" [ngClass]="{ liked: this.isLiked$ | async }">
+        {{ post.likeCount }} Like
+      </button>
+      <button mat-button>Repost</button>
+    </div>
+    <div class="post-info">
+      @if (isOwner$ | async) {
+      <button mat-icon-button (click)="deletePost()">
+        <mat-icon> delete </mat-icon>
+      </button>
+      }
+    </div>
   </mat-card-actions>
 </mat-card>
 } }

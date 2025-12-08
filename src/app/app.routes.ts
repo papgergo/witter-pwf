@@ -36,11 +36,6 @@ export const routes: Routes = [
       import('./pages/profile/profile.component').then((c) => c.ProfileComponent),
   },
   {
-    path: 'settings',
-    loadComponent: () =>
-      import('./pages/settings/settings.component').then((c) => c.SettingsComponent),
-  },
-  {
     path: 'auth',
     loadComponent: () =>
       import('./pages/auth-form/auth-form.component').then((c) => c.AuthFormComponent),

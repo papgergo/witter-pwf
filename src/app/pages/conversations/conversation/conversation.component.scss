@@ -1,9 +1,7 @@
+@use "../../../../mixins.scss" as mixin;
+
 .messages-container {
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  max-width: 700px;
-  width: 100%;
+  @include mixin.main-container;
   height: calc(100vh - 64px); /* Use height to define a fixed size */
 }
 

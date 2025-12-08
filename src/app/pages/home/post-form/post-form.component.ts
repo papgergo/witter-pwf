@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { ReplyService } from '../../../shared/services/reply.service';
+import { ManagementService } from '../../../shared/services/management.service';
 
 @Component({
   selector: 'app-post-form',
@@ -31,7 +32,7 @@ export class PostFormComponent {
   constructor(
     formBuilder: FormBuilder,
     private authService: AuthService,
-    private postService: PostService,
+    private managementService: ManagementService,
     private replyService: ReplyService
   ) {
     this.postForm = formBuilder.group({
@@ -58,7 +59,7 @@ export class PostFormComponent {
     if (this.postId) {
       this.replyService.createReply(this.postId, newPost);
     } else {
-      this.postService.createPost(newPost);
+      this.managementService.createPost(newPost);
     }
     this.postForm.reset({ text: '' }, { emitEvent: false });
   }

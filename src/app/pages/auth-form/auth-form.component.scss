@@ -1,38 +1,10 @@
+@use "../../../mixins.scss" as mixin;
+
 .main-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include mixin.main-container;
   height: calc(100vh - 64px);
 }
 
 :host ::ng-deep {
-  mat-card {
-    padding: 2vh;
-    max-width: 400px;
-    margin: auto;
-    gap: 1vh;
-  }
-
-  mat-card-content,
-  mat-card-title {
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  mat-form-field {
-    width: 100%;
-  }
-
-  form {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-  }
-
-  .submitBtn {
-    display: flex;
-    justify-content: flex-end;
-  }
+  @include mixin.auth-stlyes;
 }
