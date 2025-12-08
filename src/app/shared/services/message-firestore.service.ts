@@ -10,7 +10,7 @@ import {
   collectionGroup,
   where,
 } from '@angular/fire/firestore';
-import { from, map, Observable } from 'rxjs';
+import { from, map, Observable, timestamp } from 'rxjs';
 import { Message } from '../models/message';
 
 @Injectable({
@@ -23,13 +23,11 @@ export class MessageFirestoreService {
   constructor() {}
 
   public getMessages(convId: string): Observable<Message[]> {
-    const q = query(this.getCollectionRef(convId));
+    const q = query(this.getCollectionRef(convId), orderBy('timestamp', 'asc'));
 
     return collectionSnapshots(q).pipe(
       map((docSnapshots) =>
-        docSnapshots.map(
-          (snapshot) => ({ ...snapshot.data(), id: snapshot.id } as Message)
-        )
+        docSnapshots.map((snapshot) => ({ ...snapshot.data(), id: snapshot.id } as Message))
       )
     );
   }

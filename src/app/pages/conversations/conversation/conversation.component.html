@@ -17,8 +17,8 @@
       <div
         class="message-container"
         [ngClass]="{
-          left: message.recieverUser === otherUser.id,
-          right: message.recieverUser !== otherUser.id
+          left: message.recieverUser !== otherUser.id,
+          right: message.recieverUser === otherUser.id
         }"
       >
         {{ message.text }}

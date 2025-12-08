@@ -39,7 +39,8 @@ export class PostFormComponent {
     formBuilder: FormBuilder,
     private authService: AuthService,
     private managementService: ManagementService,
-    private replyService: ReplyService
+    private replyService: ReplyService,
+    private postService: PostService
   ) {
     this.postForm = formBuilder.group({
       text: ['', Validators.required],
@@ -67,6 +68,7 @@ export class PostFormComponent {
       this.replyService.createReply(this.postId, newPost);
     } else {
       this.managementService.createPost(newPost);
+      this.postService.openSnackBar('Post created successfully!');
     }
     this.postForm.reset({ text: '' }, { emitEvent: false });
   }

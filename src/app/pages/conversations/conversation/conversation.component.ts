@@ -86,6 +86,7 @@ export class ConversationComponent {
       text: this.messageForm.value.text,
       timestamp: date.toISOString(),
     };
+    this.messageService.openSnackBar('Message sent successfully!');
     this.messageService.sendMessage(convId!, message);
     this.messageForm.reset({ text: '' }, { emitEvent: false });
   }

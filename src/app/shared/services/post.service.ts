@@ -1,13 +1,15 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { map, Observable, shareReplay, switchMap, take } from 'rxjs';
 import { Post } from '../models/post';
 import { PostFireStoreService } from './post-firestore.service';
 import { ManagementService } from './management.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PostService {
+  private _snackBar = inject(MatSnackBar);
   private posts$: Observable<Post[]>;
 
   public selectedPosts$: Observable<Post[]>;
@@ -34,5 +36,13 @@ export class PostService {
 
   public resetPostFilter(): void {
     this.selectedPosts$ = this.posts$;
+  }
+
+  openSnackBar(message: string) {
+    this._snackBar.open(message, 'Close', {
+      duration: 3000,
+      horizontalPosition: 'end',
+      verticalPosition: 'bottom',
+    });
   }
 }

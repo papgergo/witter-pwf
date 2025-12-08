@@ -45,6 +45,7 @@ export class PostComponent implements OnInit {
   }
 
   deletePost() {
+    this.postService.openSnackBar('Post removed successfully!');
     this.managementService.deletePost(this.post?.id!);
   }
 
@@ -66,7 +67,10 @@ export class PostComponent implements OnInit {
     this.loggedInUser$
       .pipe(
         take(1),
-        switchMap((user) => this.likeService.likePost(this.post!.id!, user!.id!))
+        switchMap((user) => {
+          this.postService.openSnackBar('Post liked successfully!');
+          return this.likeService.likePost(this.post!.id!, user!.id!);
+        })
       )
       .subscribe();
   }
